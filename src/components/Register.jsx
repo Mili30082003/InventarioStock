@@ -1,21 +1,47 @@
-import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Container from 'react-bootstrap/Container';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Container from "react-bootstrap/Container";
+import { Link } from "react-router-dom";
 
 const Register = () => {
-  const [product, setProduct] = useState({ name: '', category: '', stock: '' });
+  const [product, setProduct] = useState({ name: "", category: "", stock: "" });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setProduct({ ...product, [name]: value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Producto Agregado:', product);
-    setProduct({ name: '', category: '', stock: '' });
+    setError("");
+    setSuccess("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("http://localhost:5000/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(product),
+      });
+
+      if (!res.ok) {
+        throw new Error("Error al agregar el producto. Verifica los datos.");
+      }
+
+      const data = await res.json();
+      setSuccess("Producto agregado correctamente.");
+      setProduct({ name: "", category: "", stock: "" });
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -25,6 +51,8 @@ const Register = () => {
           Inicio
         </Link>
         <h1>Agregar Producto</h1>
+        {error && <div className="alert alert-danger">{error}</div>}
+        {success && <div className="alert alert-success">{success}</div>}
         <Form className="row" onSubmit={handleSubmit}>
           <Form.Group
             className="mb-3 col-lg-6 col-md-6 col-12"
@@ -37,6 +65,7 @@ const Register = () => {
               onChange={handleChange}
               placeholder="Nombre Producto"
               name="name"
+              required
             ></Form.Control>
           </Form.Group>
           <Form.Group className="mb-3 col-lg-6 col-md-6 col-12">
@@ -47,6 +76,7 @@ const Register = () => {
               value={product.category}
               onChange={handleChange}
               name="category"
+              required
             ></Form.Control>
           </Form.Group>
           <Form.Group className="mb-3 col-lg-6 col-md-6 col-12">
@@ -57,10 +87,16 @@ const Register = () => {
               value={product.stock}
               onChange={handleChange}
               name="stock"
+              min="0"
+              required
             ></Form.Control>
           </Form.Group>
-          <Button type="submit" className="btn btn-primary">
-            Subir Producto
+          <Button
+            type="submit"
+            className="btn btn-primary"
+            disabled={loading}
+          >
+            {loading ? "Cargando..." : "Subir Producto"}
           </Button>
         </Form>
       </Container>
