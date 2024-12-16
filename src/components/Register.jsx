@@ -5,7 +5,15 @@ import Container from "react-bootstrap/Container";
 import { Link } from "react-router-dom";
 
 const Register = () => {
-  const [product, setProduct] = useState({ name: "", category: "", stock: "" });
+  const [product, setProduct] = useState({
+    name: "",
+    category: "",
+    size: "",  // Campo para el talle
+    price: "", 
+    stock: "",
+    sales: 0,  // Campo para las ventas
+    
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -36,7 +44,15 @@ const Register = () => {
 
       const data = await res.json();
       setSuccess("Producto agregado correctamente.");
-      setProduct({ name: "", category: "", stock: "" });
+      setProduct({
+        name: "",
+        category: "",
+        size: "",
+        price: "", 
+        stock: "",
+        sales: 0,
+       
+      });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -80,6 +96,17 @@ const Register = () => {
             ></Form.Control>
           </Form.Group>
           <Form.Group className="mb-3 col-lg-6 col-md-6 col-12">
+            <Form.Label>Talle</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Talle"
+              value={product.size}
+              onChange={handleChange}
+              name="size"
+              required
+            ></Form.Control>
+          </Form.Group>
+          <Form.Group className="mb-3 col-lg-6 col-md-6 col-12">
             <Form.Label>Stock</Form.Label>
             <Form.Control
               type="number"
@@ -91,6 +118,20 @@ const Register = () => {
               required
             ></Form.Control>
           </Form.Group>
+          {/* Campo para el precio */}
+          <Form.Group className="mb-3 col-lg-6 col-md-6 col-12">
+            <Form.Label>Precio</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Precio"
+              value={product.price}
+              onChange={handleChange}
+              name="price"
+              min="0"
+              required
+            ></Form.Control>
+          </Form.Group>
+
           <Button
             type="submit"
             className="btn btn-primary"
