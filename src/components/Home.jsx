@@ -16,7 +16,7 @@ const Home = () => {
   // Fetch para obtener productos
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:5000/getdata");
+      const res = await fetch("https://inventariobackend-1.onrender.com/getdata"); // Cambiado
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
@@ -27,12 +27,12 @@ const Home = () => {
       console.error("Error al obtener los productos:", error);
     }
   };
-
-  // Función para eliminar productos
+  
+  // Cambiar también en otras funciones similares
   const deleteProduct = async (id) => {
     if (window.confirm("¿Estás seguro de que deseas eliminar este producto?")) {
       try {
-        const res = await fetch(`http://localhost:5000/delete/${id}`, {
+        const res = await fetch(`https://inventariobackend-1.onrender.com/delete/${id}`, { // Cambiado
           method: "DELETE",
         });
         if (!res.ok) {
@@ -46,33 +46,26 @@ const Home = () => {
       }
     }
   };
-
-  // Función para actualizar ventas
+  
   const updateSales = async (id) => {
-    if (cantidad <= 0 || isNaN(cantidad)) {
-      alert("Por favor, ingresa una cantidad válida.");
-      return;
-    }
-
-    const cantidadInt = parseInt(cantidad);
-    const res = await fetch(`http://localhost:5000/updateventas/${id}`, {
+    // Cambiar la URL del fetch
+    const res = await fetch(`https://inventariobackend-1.onrender.com/updateventas/${id}`, { // Cambiado
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ cantidad: cantidadInt }),
     });
-
+  
     if (!res.ok) {
       alert("Hubo un error al actualizar las ventas.");
       return;
     }
-
+  
     const data = await res.json();
     console.log("Ventas actualizadas:", data);
     fetchProducts(); // Volver a obtener los productos actualizados
   };
-
   // Función para filtrar productos por categoría
   const filterByCategory = (products) => {
     return products.filter(product =>

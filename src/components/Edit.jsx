@@ -7,12 +7,12 @@ const Edit = () => {
   const navigate = useNavigate();
 
   // Estado para almacenar los datos del producto
-  const [product, setProduct] = useState({ name: '', category: '',size: '', price: '', stock: '', sales: '' });
+  const [product, setProduct] = useState({ name: '', category: '', size: '', price: '', stock: '', sales: '' });
 
   // Función para obtener los datos del producto
   const fetchProduct = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/getdata/${id}`);
+      const res = await fetch(`https://inventariobackend-1.onrender.com/getdata/${id}`); // Cambiado a la URL de Render
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
@@ -38,7 +38,7 @@ const Edit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:5000/update/${id}`, {
+      const res = await fetch(`https://inventariobackend-1.onrender.com/update/${id}`, { // Cambiado a la URL de Render
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -104,8 +104,8 @@ const Edit = () => {
           />
         </Form.Group>
 
-           {/* Precio */}
-           <Form.Group className="mb-3 col-lg-6 col-md-6 col-12">
+        {/* Precio */}
+        <Form.Group className="mb-3 col-lg-6 col-md-6 col-12">
           <Form.Label>Precio</Form.Label>
           <Form.Control
             type="number"
@@ -137,5 +137,3 @@ const Edit = () => {
 };
 
 export default Edit;
-
-
