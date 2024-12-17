@@ -28,16 +28,17 @@ export const obtenerProductos = async () => {
   try {
     const respuesta = await fetch('https://inventariobackend-1.onrender.com/getdata');
     if (!respuesta.ok) {
-      throw new Error('Error al obtener los productos');
+      throw new Error(`Error HTTP: ${respuesta.status}`);
     }
-
+    
     const productos = await respuesta.json();
     return productos;
   } catch (error) {
-    console.error('Error al obtener productos:', error);
+    console.error('Error al obtener productos:', error.message);  // Verifica el error más específico
     return [];
   }
 };
+
 
 // Función para eliminar un producto
 export const eliminarProducto = async (id) => {
