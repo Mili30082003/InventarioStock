@@ -48,24 +48,28 @@ const Home = () => {
   };
   
   const updateSales = async (id) => {
-    // Cambiar la URL del fetch
-    const res = await fetch(`https://inventariobackend-1.onrender.com/updateventas/${id}`, { // Cambiado
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ cantidad: cantidadInt }),
-    });
+    try {
+      const res = await fetch(`https://inventariobackend-1.onrender.com/updateventas/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cantidad: parseInt(cantidad, 10) || 0 }),
+      });
   
-    if (!res.ok) {
-      alert("Hubo un error al actualizar las ventas.");
-      return;
+      if (!res.ok) {
+        alert("Hubo un error al actualizar las ventas.");
+        return;
+      }
+  
+      const data = await res.json();
+      console.log("Ventas actualizadas:", data);
+      fetchProducts(); // Actualiza la lista de productos
+    } catch (error) {
+      console.error("Error al actualizar las ventas:", error);
     }
-  
-    const data = await res.json();
-    console.log("Ventas actualizadas:", data);
-    fetchProducts(); // Volver a obtener los productos actualizados
   };
+  
   // Función para filtrar productos por categoría
   const filterByCategory = (products) => {
     return products.filter(product =>

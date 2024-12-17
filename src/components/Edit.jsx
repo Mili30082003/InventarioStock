@@ -12,7 +12,7 @@ const Edit = () => {
   // Función para obtener los datos del producto
   const fetchProduct = async () => {
     try {
-      const res = await fetch(`https://inventariobackend-1.onrender.com/getdata/${id}`); // Cambiado a la URL de Render
+      const res = await fetch(`https://inventariobackend-1.onrender.com/getdata/${id}`);
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
@@ -38,7 +38,7 @@ const Edit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`https://inventariobackend-1.onrender.com/update/${id}`, { // Cambiado a la URL de Render
+      const res = await fetch(`https://inventariobackend-1.onrender.com/update/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -89,6 +89,18 @@ const Edit = () => {
             value={product.category}
             onChange={handleChange}
             name="category"
+          />
+        </Form.Group>
+
+        {/* Talle */}
+        <Form.Group className="mb-3 col-lg-6 col-md-6 col-12">
+          <Form.Label>Talle</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Talle"
+            value={product.size}
+            onChange={handleChange}
+            name="size"
           />
         </Form.Group>
 

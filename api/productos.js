@@ -83,25 +83,4 @@ export const actualizarProducto = async (id, datosActualizados) => {
 };
 
 // Función para actualizar ventas de un producto
-const updateSales = async (id) => {
-  try {
-    const res = await fetch(`https://inventariobackend-1.onrender.com/updateventas/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ cantidad: parseInt(cantidad, 10) || 0 }),
-    });
 
-    if (!res.ok) {
-      alert("Hubo un error al actualizar las ventas.");
-      return;
-    }
-
-    const data = await res.json();
-    console.log("Ventas actualizadas:", data);
-    fetchProducts(); // Actualiza la lista de productos
-  } catch (error) {
-    console.error("Error al actualizar las ventas:", error);
-  }
-};
